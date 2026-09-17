@@ -1,1 +1,98 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary-color: #6C63FF;
+    --secondary-color: #4CAF50;
+    --accent-color: #FF6B6B;
+    --background-dark: #1a1a2e;
+    --background-light: #16213e;
+    --text-light: #ffffff;
+    --text-muted: #a0a0a0;
+    --red: #ff4757;
+    --blue: #3742fa;
+    --green: #2ed573;
+    --yellow: #ffa502;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-light) 100%);
+    min-height: 100vh;
+    color: var(--text-light);
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-dark {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .text-gradient {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .btn-gradient {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  }
+
+  .progress-gradient {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+@keyframes correct {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease;
+}
+
+.animate-fadeInDown {
+  animation: fadeInDown 0.8s ease;
+}
+
+.animate-pulse-word {
+  animation: pulse 2s infinite;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease;
+}
+
+.animate-correct {
+  animation: correct 0.3s ease;
+}
