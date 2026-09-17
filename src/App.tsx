@@ -95,6 +95,11 @@ function getCognitiveLevel(accuracy: number, avgTime: number) {
   }
 }
 
+// Inline style helpers
+const mutedText = { color: '#a0a0a0' };
+const primaryText = { color: '#6C63FF' };
+const greenText = { color: '#4CAF50' };
+
 // Components
 function Header() {
   return (
@@ -102,7 +107,7 @@ function Header() {
       <h1 className="text-4xl md:text-5xl font-bold mb-2 text-gradient">
         🧠 Цветовой тест Струпа
       </h1>
-      <p className="text-[#a0a0a0] text-lg md:text-xl">
+      <p className="text-lg md:text-xl" style={mutedText}>
         Проверь свой когнитивный контроль и скорость реакции!
       </p>
     </header>
@@ -124,19 +129,27 @@ function Navigation({
 
   return (
     <nav className="flex justify-center gap-4 mb-10 flex-wrap">
-      {buttons.map((btn) => (
-        <button
-          key={btn.id}
-          onClick={() => onNavigate(btn.id)}
-          className={`px-7 py-3 rounded-full cursor-pointer transition-all duration-300 border border-white/10 backdrop-blur-md ${
-            activeSection === btn.id
-              ? 'bg-[#6C63FF] -translate-y-0.5 shadow-[0_10px_30px_rgba(108,99,255,0.3)]'
-              : 'bg-white/5 hover:bg-[#6C63FF] hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(108,99,255,0.3)]'
-          } text-white`}
-        >
-          {btn.icon} {btn.label}
-        </button>
-      ))}
+      {buttons.map((btn) => {
+        const isActive = activeSection === btn.id;
+        return (
+          <button
+            key={btn.id}
+            onClick={() => onNavigate(btn.id)}
+            className="px-7 py-3 rounded-full cursor-pointer transition-all duration-300 text-white font-medium"
+            style={{
+              background: isActive ? '#6C63FF' : 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(10px)',
+              transform: isActive ? 'translateY(-2px)' : 'none',
+              boxShadow: isActive
+                ? '0 10px 30px rgba(108,99,255,0.3)'
+                : 'none',
+            }}
+          >
+            {btn.icon} {btn.label}
+          </button>
+        );
+      })}
     </nav>
   );
 }
@@ -145,7 +158,7 @@ function StartScreen({ onStart }: { onStart: () => void }) {
   return (
     <div>
       <h2 className="text-center text-2xl font-bold mb-5">Добро пожаловать!</h2>
-      <p className="text-[#a0a0a0] leading-relaxed mb-8">
+      <p style={{ ...mutedText, lineHeight: 1.8 }} className="mb-8">
         На экране появится слово, обозначающее цвет, но написанное другим цветом.
         <br />
         Ваша задача — нажать на кнопку с <strong>правильным ЦВЕТОМ</strong>, а не
@@ -160,7 +173,10 @@ function StartScreen({ onStart }: { onStart: () => void }) {
       </p>
       <button
         onClick={onStart}
-        className="w-full py-5 rounded-2xl btn-gradient text-white text-xl font-bold cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(108,99,255,0.4)]"
+        className="w-full py-5 rounded-2xl btn-gradient text-white text-xl font-bold cursor-pointer transition-all duration-300"
+        style={{
+          boxShadow: '0 15px 40px rgba(108,99,255,0.4)',
+        }}
       >
         Начать тест
       </button>
@@ -187,23 +203,36 @@ function GameScreen({
       {/* Stats Bar */}
       <div className="flex justify-around mb-8 p-5 glass-dark rounded-2xl">
         <div className="text-center">
-          <div className="text-3xl font-bold text-[#6C63FF]">{gameState.score}</div>
-          <div className="text-[#a0a0a0] text-sm">Очки</div>
+          <div className="text-3xl font-bold" style={primaryText}>
+            {gameState.score}
+          </div>
+          <div className="text-sm" style={mutedText}>
+            Очки
+          </div>
         </div>
         <div className="text-center">
-          <div className="text-3xl font-bold text-[#6C63FF]">{gameState.timeLeft}</div>
-          <div className="text-[#a0a0a0] text-sm">Секунд</div>
+          <div className="text-3xl font-bold" style={primaryText}>
+            {gameState.timeLeft}
+          </div>
+          <div className="text-sm" style={mutedText}>
+            Секунд
+          </div>
         </div>
         <div className="text-center">
-          <div className="text-3xl font-bold text-[#6C63FF]">
+          <div className="text-3xl font-bold" style={primaryText}>
             {gameState.currentRound}/{gameState.totalRounds}
           </div>
-          <div className="text-[#a0a0a0] text-sm">Раунд</div>
+          <div className="text-sm" style={mutedText}>
+            Раунд
+          </div>
         </div>
       </div>
 
       {/* Word Display */}
-      <div className="text-center py-16 px-5 mb-8 glass-dark rounded-2xl min-h-[200px] flex items-center justify-center">
+      <div
+        className="text-center py-16 px-5 mb-8 glass-dark rounded-2xl flex items-center justify-center"
+        style={{ minHeight: '200px' }}
+      >
         <div
           className={`text-5xl md:text-6xl font-bold uppercase ${wordClass}`}
           style={{ color: COLOR_VALUES[gameState.currentColor] }}
@@ -218,8 +247,19 @@ function GameScreen({
           <button
             key={color}
             onClick={() => onAnswer(color)}
-            className="py-6 rounded-2xl text-lg font-bold text-white uppercase cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,0,0,0.3)] active:scale-95"
-            style={{ background: COLOR_VALUES[color] }}
+            className="py-6 rounded-2xl text-lg font-bold text-white uppercase cursor-pointer transition-all duration-300"
+            style={{
+              background: COLOR_VALUES[color],
+              boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+            }}
           >
             {COLOR_NAMES[color]}
           </button>
@@ -262,32 +302,51 @@ function ResultsScreen({
   const { level, description } = getCognitiveLevel(accuracy, avgTime);
 
   return (
-    <div className="glass-card rounded-3xl p-8 md:p-10 max-w-[600px] mx-auto text-center animate-fadeIn">
+    <div
+      className="glass-card rounded-3xl p-8 md:p-10 mx-auto text-center animate-fadeIn"
+      style={{ maxWidth: '600px' }}
+    >
       <h2 className="text-2xl font-bold mb-4">Ваши результаты</h2>
       <div className="text-6xl md:text-7xl font-bold text-gradient my-5">
         {accuracy}%
       </div>
-      <div className="text-2xl mb-5 text-[#4CAF50]">{level}</div>
-      <p className="text-[#a0a0a0] leading-relaxed mb-8">{description}</p>
+      <div className="text-2xl mb-5" style={greenText}>
+        {level}
+      </div>
+      <p style={{ ...mutedText, lineHeight: 1.8 }} className="mb-8">
+        {description}
+      </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 my-8">
         <div className="glass-dark p-5 rounded-2xl">
-          <h3 className="text-[#a0a0a0] text-sm mb-2">Правильных ответов</h3>
-          <div className="text-3xl font-bold text-[#6C63FF]">
+          <h3 className="text-sm mb-2" style={mutedText}>
+            Правильных ответов
+          </h3>
+          <div className="text-3xl font-bold" style={primaryText}>
             {gameState.correctAnswers}/{gameState.totalRounds}
           </div>
         </div>
         <div className="glass-dark p-5 rounded-2xl">
-          <h3 className="text-[#a0a0a0] text-sm mb-2">Среднее время</h3>
-          <div className="text-3xl font-bold text-[#6C63FF]">{avgTime}с</div>
+          <h3 className="text-sm mb-2" style={mutedText}>
+            Среднее время
+          </h3>
+          <div className="text-3xl font-bold" style={primaryText}>
+            {avgTime}с
+          </div>
         </div>
         <div className="glass-dark p-5 rounded-2xl">
-          <h3 className="text-[#a0a0a0] text-sm mb-2">Точность</h3>
-          <div className="text-3xl font-bold text-[#6C63FF]">{accuracy}%</div>
+          <h3 className="text-sm mb-2" style={mutedText}>
+            Точность
+          </h3>
+          <div className="text-3xl font-bold" style={primaryText}>
+            {accuracy}%
+          </div>
         </div>
         <div className="glass-dark p-5 rounded-2xl">
-          <h3 className="text-[#a0a0a0] text-sm mb-2">Лучшая серия</h3>
-          <div className="text-3xl font-bold text-[#6C63FF]">
+          <h3 className="text-sm mb-2" style={mutedText}>
+            Лучшая серия
+          </h3>
+          <div className="text-3xl font-bold" style={primaryText}>
             {gameState.bestStreak}
           </div>
         </div>
@@ -295,7 +354,8 @@ function ResultsScreen({
 
       <button
         onClick={onRestart}
-        className="w-full py-5 rounded-2xl btn-gradient text-white text-xl font-bold cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(108,99,255,0.4)]"
+        className="w-full py-5 rounded-2xl btn-gradient text-white text-xl font-bold cursor-pointer transition-all duration-300"
+        style={{ boxShadow: '0 15px 40px rgba(108,99,255,0.4)' }}
       >
         Пройти ещё раз
       </button>
@@ -308,16 +368,16 @@ function AboutScreen() {
     <div className="glass-card rounded-3xl p-8 md:p-10 animate-fadeIn">
       {/* What is Stroop */}
       <section className="mb-10">
-        <h2 className="text-[#6C63FF] text-2xl md:text-3xl font-bold mb-5">
+        <h2 className="text-2xl md:text-3xl font-bold mb-5" style={primaryText}>
           📖 Что такое тест Струпа?
         </h2>
-        <p className="text-[#a0a0a0] leading-relaxed mb-4">
+        <p style={{ ...mutedText, lineHeight: 1.8 }} className="mb-4">
           <strong>Эффект Струпа</strong> — это психологический феномен, открытый
           американским психологом Джоном Ридли Струпом в 1935 году. Он
           демонстрирует интерференцию в обработке информации, когда мозг получает
           противоречивые сигналы.
         </p>
-        <p className="text-[#a0a0a0] leading-relaxed">
+        <p style={{ ...mutedText, lineHeight: 1.8 }}>
           Когда вы видите слово «СИНИЙ», написанное красным цветом, ваш мозг
           автоматически читает слово (что быстрее), но задача требует назвать цвет
           (что медленнее). Это создаёт когнитивный конфликт, который нужно
@@ -327,16 +387,16 @@ function AboutScreen() {
 
       {/* How it works */}
       <section className="mb-10">
-        <h2 className="text-[#6C63FF] text-2xl md:text-3xl font-bold mb-5">
+        <h2 className="text-2xl md:text-3xl font-bold mb-5" style={primaryText}>
           ⚙️ Как это работает?
         </h2>
-        <p className="text-[#a0a0a0] leading-relaxed mb-4">
+        <p style={{ ...mutedText, lineHeight: 1.8 }} className="mb-4">
           Тест измеряет вашу способность подавлять автоматические реакции и
           переключать внимание. Чем быстрее и точнее вы отвечаете, тем лучше
           развит ваш <strong>когнитивный контроль</strong> — способность мозга
           управлять вниманием и подавлять ненужные импульсы.
         </p>
-        <p className="text-[#a0a0a0] leading-relaxed">
+        <p style={{ ...mutedText, lineHeight: 1.8 }}>
           В игре используется 20 раундов со случайной комбинацией слов и цветов.
           Система замеряет время реакции и точность ответов, чтобы оценить уровень
           вашего когнитивного контроля.
@@ -345,10 +405,10 @@ function AboutScreen() {
 
       {/* Design */}
       <section className="mb-10">
-        <h2 className="text-[#6C63FF] text-2xl md:text-3xl font-bold mb-5">
+        <h2 className="text-2xl md:text-3xl font-bold mb-5" style={primaryText}>
           🎨 Дизайн и цвета
         </h2>
-        <p className="text-[#a0a0a0] leading-relaxed mb-5">
+        <p style={{ ...mutedText, lineHeight: 1.8 }} className="mb-5">
           Проект выполнен в современном тёмном стиле с яркими акцентами.
           Используется градиентный фон и полупрозрачные карточки с эффектом
           размытия (glassmorphism).
@@ -366,8 +426,10 @@ function AboutScreen() {
           ].map((swatch) => (
             <div
               key={swatch.label}
-              className="w-20 h-20 rounded-2xl flex items-end justify-center pb-2.5 text-xs font-bold text-white"
+              className="rounded-2xl flex items-end justify-center pb-2.5 text-xs font-bold text-white"
               style={{
+                width: '80px',
+                height: '80px',
                 background: swatch.color,
                 textShadow: '0 2px 4px rgba(0,0,0,0.5)',
               }}
@@ -380,10 +442,10 @@ function AboutScreen() {
 
       {/* Tech Stack */}
       <section className="mb-10">
-        <h2 className="text-[#6C63FF] text-2xl md:text-3xl font-bold mb-5">
+        <h2 className="text-2xl md:text-3xl font-bold mb-5" style={primaryText}>
           💻 Технический стек
         </h2>
-        <p className="text-[#a0a0a0] leading-relaxed mb-5">
+        <p style={{ ...mutedText, lineHeight: 1.8 }} className="mb-5">
           Проект создан с использованием React, TypeScript и Tailwind CSS —
           современных инструментов для создания быстрых и красивых веб-приложений.
         </p>
@@ -398,10 +460,14 @@ function AboutScreen() {
           ].map((tech) => (
             <div
               key={tech.title}
-              className="glass-dark p-5 rounded-2xl text-center transition-all duration-300 hover:-translate-y-1 hover:bg-[#6C63FF]/10"
+              className="glass-dark p-5 rounded-2xl text-center transition-all duration-300"
             >
-              <h3 className="text-[#4CAF50] font-bold mb-2">{tech.title}</h3>
-              <p className="text-[#a0a0a0] text-sm">{tech.desc}</p>
+              <h3 className="font-bold mb-2" style={greenText}>
+                {tech.title}
+              </h3>
+              <p className="text-sm" style={mutedText}>
+                {tech.desc}
+              </p>
             </div>
           ))}
         </div>
@@ -409,10 +475,10 @@ function AboutScreen() {
 
       {/* Features */}
       <section>
-        <h2 className="text-[#6C63FF] text-2xl md:text-3xl font-bold mb-5">
+        <h2 className="text-2xl md:text-3xl font-bold mb-5" style={primaryText}>
           🚀 Особенности проекта
         </h2>
-        <ul className="text-[#a0a0a0] leading-loose list-disc pl-5 space-y-1">
+        <ul style={{ ...mutedText, lineHeight: 2 }} className="list-disc pl-5">
           <li>✨ Плавные анимации и переходы</li>
           <li>📱 Адаптивный дизайн для всех устройств</li>
           <li>🎯 Точный замер времени реакции</li>
@@ -457,11 +523,17 @@ export default function App() {
   useEffect(() => {
     if (
       gameState.phase === 'playing' &&
-      (gameState.timeLeft <= 0 || gameState.currentRound >= gameState.totalRounds)
+      (gameState.timeLeft <= 0 ||
+        gameState.currentRound >= gameState.totalRounds)
     ) {
       setGameState((prev) => ({ ...prev, phase: 'ended' }));
     }
-  }, [gameState.timeLeft, gameState.currentRound, gameState.phase, gameState.totalRounds]);
+  }, [
+    gameState.timeLeft,
+    gameState.currentRound,
+    gameState.phase,
+    gameState.totalRounds,
+  ]);
 
   // Auto-switch to results when game ends
   useEffect(() => {
@@ -500,7 +572,8 @@ export default function App() {
     (selectedColor: ColorKey) => {
       if (gameState.phase !== 'playing') return;
 
-      const responseTime = (Date.now() - (gameState.startTime || Date.now())) / 1000;
+      const responseTime =
+        (Date.now() - (gameState.startTime || Date.now())) / 1000;
       const isCorrect = selectedColor === gameState.currentColor;
 
       setGameState((prev) => {
@@ -509,7 +582,8 @@ export default function App() {
 
         if (isCorrect) {
           newState.correctAnswers = prev.correctAnswers + 1;
-          newState.score = prev.score + Math.max(10 - Math.floor(responseTime), 1);
+          newState.score =
+            prev.score + Math.max(10 - Math.floor(responseTime), 1);
           newState.streak = prev.streak + 1;
           newState.bestStreak = Math.max(prev.streak + 1, prev.bestStreak);
           newState.animation = 'correct';
@@ -568,14 +642,14 @@ export default function App() {
   }, [gameState.phase, checkAnswer]);
 
   return (
-    <div className="max-w-[1200px] mx-auto px-5 py-5">
+    <div className="min-h-screen w-full mx-auto px-4 sm:px-6 lg:px-8 py-5" style={{ maxWidth: '1200px' }}>
       <Header />
       <Navigation activeSection={activeSection} onNavigate={setActiveSection} />
 
       {/* Game Section */}
       {activeSection === 'game' && (
         <div className="animate-fadeIn">
-          <div className="glass-card rounded-3xl p-8 md:p-10 max-w-[600px] mx-auto">
+          <div className="glass-card rounded-3xl p-8 md:p-10 mx-auto" style={{ maxWidth: '600px' }}>
             {gameState.phase === 'start' ? (
               <StartScreen onStart={startGame} />
             ) : (

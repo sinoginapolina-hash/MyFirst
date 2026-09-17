@@ -1,56 +1,73 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --primary-color: #6C63FF;
-    --secondary-color: #4CAF50;
-    --accent-color: #FF6B6B;
-    --background-dark: #1a1a2e;
-    --background-light: #16213e;
-    --text-light: #ffffff;
-    --text-muted: #a0a0a0;
-    --red: #ff4757;
-    --blue: #3742fa;
-    --green: #2ed573;
-    --yellow: #ffa502;
-  }
-
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-light) 100%);
-    min-height: 100vh;
-    color: var(--text-light);
-    overflow-x: hidden;
-  }
+/* === Global Reset & Base === */
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
 }
 
-@layer utilities {
-  .glass-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .glass-dark {
-    background: rgba(0, 0, 0, 0.2);
-  }
-
-  .text-gradient {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .btn-gradient {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-  }
-
-  .progress-gradient {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-  }
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #ffffff;
+  overflow-x: hidden;
 }
 
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* === CSS Custom Properties === */
+:root {
+  --primary-color: #6C63FF;
+  --secondary-color: #4CAF50;
+  --accent-color: #FF6B6B;
+  --background-dark: #1a1a2e;
+  --background-light: #16213e;
+  --text-light: #ffffff;
+  --text-muted: #a0a0a0;
+  --red: #ff4757;
+  --blue: #3742fa;
+  --green: #2ed573;
+  --yellow: #ffa502;
+}
+
+/* === Custom Utility Classes === */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #6C63FF, #4CAF50);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.btn-gradient {
+  background: linear-gradient(90deg, #6C63FF, #4CAF50);
+}
+
+.progress-gradient {
+  background: linear-gradient(90deg, #6C63FF, #4CAF50);
+}
+
+/* === Animations === */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -61,7 +78,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes pulse {
+@keyframes pulseWord {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.05); }
 }
@@ -72,21 +89,21 @@
   75% { transform: translateX(10px); }
 }
 
-@keyframes correct {
+@keyframes correctAnim {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.5s ease;
+  animation: fadeIn 0.5s ease forwards;
 }
 
 .animate-fadeInDown {
-  animation: fadeInDown 0.8s ease;
+  animation: fadeInDown 0.8s ease forwards;
 }
 
 .animate-pulse-word {
-  animation: pulse 2s infinite;
+  animation: pulseWord 2s infinite;
 }
 
 .animate-shake {
@@ -94,5 +111,5 @@
 }
 
 .animate-correct {
-  animation: correct 0.3s ease;
+  animation: correctAnim 0.3s ease;
 }
